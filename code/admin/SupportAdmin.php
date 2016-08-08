@@ -15,7 +15,7 @@ class SupportAdmin extends LeftAndMain {
 
 
 
-    private static $menu_priority = 100;
+    private static $menu_priority = 20;
 
 
 

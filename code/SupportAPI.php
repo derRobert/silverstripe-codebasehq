@@ -119,7 +119,7 @@ class SupportAPI extends Object {
     public static function toArrayList( $array ) {
         $ret = ArrayList::create();
         if( $array ) foreach( $array as $a ) {
-            $ret->push( ViewableTicket::create($a) );
+            if( is_array($a) ) $ret->push( ViewableTicket::create($a) );
         }
         return $ret;
     }
