@@ -1,0 +1,44 @@
+.supportadmin-top-buttons {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+.supportadmin-status {
+    color: #fff;
+    padding: 2px 4px;
+    display: inline-block;
+    border-radius: 6px;
+    font-size: 87%;
+}
+td > span.supportadmin-status {
+    display: block;
+    text-align: center;
+}
+.status-green {
+    background: #9ac130;
+}
+.status-orange {
+    background: #ef8d18;
+}
+.status-blue {
+    background: #43a8d7;
+}
+.status-grey {
+    background: #606060;
+}
+.status-red {
+    background: #d62222;
+}
+.status-black {
+    background: #000;
+}
+.status-white {
+    background: #fff;
+    color: #000;
+}
+.status-purple {
+    background: #a508b3;
+}
+.status-pink {
+    background: #ec0075;
+}
