@@ -98,12 +98,14 @@ class SupportAPI extends Object {
             $body = $result;
 
         }
+
         $myxml = simplexml_load_string($body);
         $xmlArray = self::toArray($myxml);
         return $returnArrayKey && array_key_exists($returnArrayKey, $xmlArray)? $xmlArray[$returnArrayKey] : $xmlArray ;
     }
 
     private static function toArray($xml) {
+
         $array = json_decode(json_encode($xml), TRUE);
         foreach (array_slice($array, 0) as $key => $value) {
             if (empty($value)) $array[$key] = NULL;
@@ -118,6 +120,13 @@ class SupportAPI extends Object {
 
     public static function toArrayList( $array ) {
         $ret = ArrayList::create();
+        // Hack
+        // when the response has only 1 item, it is not an indexed array
+        if( array_keys($array) !== range(0, count($array) - 1) ) {
+            $new_array = array();
+            $new_array[0] = $array;
+            $array=$new_array;
+        }
         if( $array ) foreach( $array as $a ) {
             if( is_array($a) ) $ret->push( ViewableTicket::create($a) );
         }

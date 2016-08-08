@@ -15,14 +15,6 @@ class SupportAdmin extends LeftAndMain {
 
 
 
-    private static $menu_priority = 20;
-
-
-
-    private static $url_priority = 30;
-
-
-
 //    private static $menu_icon = "dashboard/images/dashboard.png";
 //
 //
@@ -64,9 +56,9 @@ class SupportAdmin extends LeftAndMain {
 
         $fields->push( LiteralField::create('l_links', "
         <p>
-        <a class='action' href='{$this->Link()}'>offene Tickets</a> |&nbsp;
-        <a class='action' href='{$this->Link()}?query=status:closed'>geschlossene Tickets</a> |&nbsp;
-        <a class='action' href='{$this->Link()}?query=ALL'>alleTickets</a> |&nbsp;
+        <a class='action' href='". HTTP::setGetVar('query', '', $this->Link()) ."'>offene Tickets</a> |&nbsp;
+        <a class='action' href='". HTTP::setGetVar('query', 'status:closed', $this->Link()) ."'>geschlossene Tickets</a> |&nbsp;
+        <a class='action' href='". HTTP::setGetVar('query', 'ALL', $this->Link()) ."'>alleTickets</a> |&nbsp;
         </p>
         ") );
 
