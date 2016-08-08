@@ -1,0 +1,9 @@
+---
+Name: codebasehq
+---
+SupportAPI:
+  api_endpoint: '' #full url incl. project e.g. 'http://api3.codebasehq.com/projectName'
+  web_endpoint: '' #full url incl. project e.g. 'http://yourdomain.codebasehq.com/projectName'
+  auth:
+    username: 'your/username' # username see Settings -> My Profile -> API Credentials
+    token: 'key-here' # Settings -> My Profile -> API Credentials
