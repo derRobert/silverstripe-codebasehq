@@ -61,6 +61,7 @@ class SupportAdmin extends LeftAndMain {
     public function getEditForm($id = null, $fields = null) {
         // List all reports
         $fields = new FieldList();
+
         $fields->push( LiteralField::create('l_links', "
         <p>
         <a class='action' href='{$this->Link()}'>offene Tickets</a> |&nbsp;

@@ -14,5 +14,8 @@
     "silverstripe/framework": "^3.1",
     "silverstripe/cms": "^3.1",
     "zendframework/zendframework1": "^1.12"
+  },
+  "extra": {
+    "installer-name": "codebasehq"
   }
 }
