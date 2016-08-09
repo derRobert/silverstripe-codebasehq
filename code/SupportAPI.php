@@ -103,7 +103,7 @@ class SupportAPI extends Object {
 
         $myxml = simplexml_load_string($body);
 
-        $xmlArray = self::toArray($myxml);
+        $xmlArray = self::toArray($myxml, $returnArrayKey);
 
         return $returnArrayKey && array_key_exists($returnArrayKey, $xmlArray)? $xmlArray[$returnArrayKey] : $xmlArray ;
     }

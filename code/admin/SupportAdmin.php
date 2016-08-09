@@ -52,6 +52,8 @@ class SupportAdmin extends LeftAndMain {
 
     public function getEditForm($id = null, $fields = null) {
         // List all reports
+
+        $List = $this->getList();
         $fields = new FieldList();
 
         $fields->push( LiteralField::create('l_links', "
@@ -69,7 +71,7 @@ class SupportAdmin extends LeftAndMain {
             new GridFieldDataColumns(),
             new GridFieldFooter()
         );
-        $gridField = new GridField('Tickets',false, $this->getList(), $gridFieldConfig);
+        $gridField = new GridField('Tickets',false, $List, $gridFieldConfig);
         $columns = $gridField->getConfig()->getComponentByType('GridFieldDataColumns');
         $columns->setDisplayFields(array(
             'ticket-id' => 'ID',
