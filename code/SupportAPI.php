@@ -11,6 +11,7 @@ class SupportAPI extends Object {
     private static $cache_lifetime = 300;
     private static $cache_dir = '/tmp';
     private static $api_endpoint = null;
+    private static $project = null;
     private static $web_endpoint = null;
     private static $auth = null;
 
@@ -59,16 +60,19 @@ class SupportAPI extends Object {
 
     private function _request($path, $returnArrayKey=null, $query=null) {
         $uri = $this->_client->getUri();
-        $uri->setPath( implode('/', array($uri->getPath(), $path)) );
+
+        $uri->setPath( $path );
 
         if( $query ) {
             $uri->setQuery(array("query"=>$query));
         }
+
         $this->_client->setUri($uri);
         $this->_client->setHeaders(array(
             'Accept' => 'application/xml',
             'Content-type' => 'application/xml',
         ));
+
 
         $this->_client->setAuth($this->config()->auth['username'], $this->config()->auth['token']);
         $frontendOptions = array(
@@ -125,8 +129,17 @@ class SupportAPI extends Object {
     }
 
     public function tickets($query=null) {
-        return $this->_request('tickets', 'ticket', $query);
+        return $this->_request('/'.$this->config()->project.'/tickets', 'ticket', $query);
     }
+
+    public function projects($query=null) {
+        return $this->_request('/projects', 'project', $query);
+    }
+    public function project($query=null) {
+        return $this->_request("/$query");
+    }
+
+
 
 
     public static function toArrayList( $array ) {

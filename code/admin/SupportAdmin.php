@@ -53,14 +53,20 @@ class SupportAdmin extends LeftAndMain {
     public function getEditForm($id = null, $fields = null) {
         // List all reports
 
+
+        $api = SupportAPI::getInstance();
+
+        $project_info = $api->project($api->config()->project);
+
         $List = $this->getList();
         $fields = new FieldList();
 
         $fields->push( LiteralField::create('l_links', "
         <p>
-        <a class='action' href='". HTTP::setGetVar('query', '', $this->Link()) ."'>offene Tickets</a> |&nbsp;
-        <a class='action' href='". HTTP::setGetVar('query', 'status:closed', $this->Link()) ."'>geschlossene Tickets</a> |&nbsp;
-        <a class='action' href='". HTTP::setGetVar('query', 'ALL', $this->Link()) ."'>alleTickets</a> |&nbsp;
+        <a class='action' href='". HTTP::setGetVar('query', '', $this->Link()) ."'>offene Tickets ({$project_info['open-tickets']})</a> |&nbsp;
+        <a class='action' href='". HTTP::setGetVar('query', 'status:closed', $this->Link()) ."'>geschlossene Tickets ({$project_info['closed-tickets']})</a> |&nbsp;
+        <a class='action' href='". HTTP::setGetVar('query', 'ALL', $this->Link()) ."'>alleTickets ({$project_info['total-tickets']})</a> 
+        <em><small style='font-size: 87%; margin-left: 20px; color: #666'>(im Moment die aktuellsten 20 Einträge)</small></em>
         </p>
         ") );
 
