@@ -100,16 +100,24 @@ class SupportAPI extends Object {
         }
 
         $myxml = simplexml_load_string($body);
+
         $xmlArray = self::toArray($myxml);
+
         return $returnArrayKey && array_key_exists($returnArrayKey, $xmlArray)? $xmlArray[$returnArrayKey] : $xmlArray ;
     }
 
-    private static function toArray($xml) {
-
-        $array = json_decode(json_encode($xml), TRUE);
-        foreach (array_slice($array, 0) as $key => $value) {
-            if (empty($value)) $array[$key] = NULL;
-            elseif (is_array($value)) $array[$key] = self::toArray($value);
+    private static function toArray($xml, $nodeName = null) {
+        $array = array();
+        if( $nodeName ) {
+            if( $xml->$nodeName ) foreach( $xml->$nodeName as $el ) {
+                $array[] = self::toArray($el);
+            }
+        } else {
+            $array = json_decode(json_encode($xml), TRUE);
+            foreach (array_slice($array, 0) as $key => $value) {
+                if (empty($value)) $array[$key] = NULL;
+                elseif (is_array($value)) $array[$key] = self::toArray($value);
+            }
         }
         return $array;
     }
@@ -117,6 +125,7 @@ class SupportAPI extends Object {
     public function tickets($query=null) {
         return $this->_request('tickets', 'ticket', $query);
     }
+
 
     public static function toArrayList( $array ) {
         $ret = ArrayList::create();
