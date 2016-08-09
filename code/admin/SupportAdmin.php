@@ -124,4 +124,12 @@ class SupportAdmin extends LeftAndMain {
         return SupportAPI::toArrayList($tickets);
     }
 
+    public function LinkCreateTicket() {
+        return implode("/", array(
+            Config::inst()->get('SupportAPI', 'web_endpoint'),
+            "tickets",
+            'new'
+        ));
+    }
+
 }

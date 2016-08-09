@@ -11,7 +11,7 @@
         <% end_with %>
         <div class="supportadmin-top-buttons">
 
-                <a class="ss-ui-button ss-ui-action-constructive" href="javascript:void(0);"><% _t('SupportAdmin.ADDTICKET','New Ticket') %></a>
+                <a class="ss-ui-button ss-ui-action-constructive" href="$LinkCreateTicket" target="codebasehq"><% _t('SupportAdmin.ADDTICKET','New Ticket') %></a>
 
         </div>
     </div>
