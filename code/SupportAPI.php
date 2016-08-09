@@ -47,11 +47,13 @@ class SupportAPI extends Object {
     }
 
     protected function cacheKey($path, $query=null) {
+        $str[] = $this->config()->web_endpoint;
         $str[] = $path;
         if( $query ) {
-            $str[] = preg_replace('/[^0-9A-Z]/i', '_', $query);
+            $str[] = $query;
         }
         $cacheKey = implode("_", $str);
+        $cacheKey = preg_replace('/[^0-9A-Z]/i', '_', $cacheKey);
         return $cacheKey;
     }
 
