@@ -32,6 +32,8 @@ class SupportAdmin extends LeftAndMain {
 
     protected $query = null;
 
+    protected $page=1;
+
 
     public function init()
     {
@@ -46,6 +48,9 @@ class SupportAdmin extends LeftAndMain {
 
         } else {
             $this->query = 'status:open';
+        }
+        if( $page= $r->requestVar('page') ) {
+            $this->page = (int)$page;
         }
         Requirements::css('codebasehq/css/SupportAdmin.css');
     }
@@ -66,10 +71,21 @@ class SupportAdmin extends LeftAndMain {
         <a class='action' href='". HTTP::setGetVar('query', '', $this->Link()) ."'>offene Tickets ({$project_info['open-tickets']})</a> |&nbsp;
         <a class='action' href='". HTTP::setGetVar('query', 'status:closed', $this->Link()) ."'>geschlossene Tickets ({$project_info['closed-tickets']})</a> |&nbsp;
         <a class='action' href='". HTTP::setGetVar('query', 'ALL', $this->Link()) ."'>alleTickets ({$project_info['total-tickets']})</a> 
-        <em><small style='font-size: 87%; margin-left: 20px; color: #666'>(im Moment die aktuellsten 20 Einträge)</small></em>
         </p>
         ") );
-
+        if( $this->page > 1 ) {
+            $prev_btn = FormField::create_tag('a', array(
+                'href' => HTTP::setGetVar('page', ($this->page -1), null, '&'),
+                'class' => 'ss-ui-button ss-ui-action-constructive ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'
+            ), ' < ');
+        } else {
+            $prev_btn = "";
+        }
+        $btns = LiteralField::create('btns', $prev_btn . FormField::create_tag('a', array(
+                'href' => HTTP::setGetVar('page', ($this->page +1), null, '&'),
+                'class' => 'ss-ui-button ss-ui-action-constructive ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only'
+            ), ' > ') );
+        $fields->push( $btns  );
 
         $gridFieldConfig = GridFieldConfig::create()->addComponents(
             new GridFieldToolbarHeader(),
@@ -114,6 +130,9 @@ class SupportAdmin extends LeftAndMain {
         ));
         $fields->push($gridField);
 
+        $fields->push( $btns  );
+
+
         $actions = new FieldList();
         $form = CMSForm::create(
             $this, "EditForm", $fields, $actions
@@ -128,7 +147,7 @@ class SupportAdmin extends LeftAndMain {
     }
 
     public function getList() {
-        $tickets = SupportAPI::getInstance()->tickets($this->query?$this->query:null);
+        $tickets = SupportAPI::getInstance()->tickets($this->query?$this->query:null, $this->page);
         return SupportAPI::toArrayList($tickets);
     }
 

@@ -8,7 +8,7 @@
 class SupportAPI extends Object {
 
     private static $_instance = null;
-    private static $cache_lifetime = 300;
+    private static $cache_lifetime = -1;
     private static $cache_dir = '/tmp';
     private static $api_endpoint = null;
     private static $project = null;
@@ -47,25 +47,27 @@ class SupportAPI extends Object {
         return self::$_instance;
     }
 
-    protected function cacheKey($path, $query=null) {
+    protected function cacheKey($path, $query=null, $page=1) {
         $str[] = $this->config()->web_endpoint;
         $str[] = $path;
         if( $query ) {
             $str[] = $query;
         }
+        $str[] = $page;
         $cacheKey = implode("_", $str);
         $cacheKey = preg_replace('/[^0-9A-Z]/i', '_', $cacheKey);
         return $cacheKey;
     }
 
-    private function _request($path, $returnArrayKey=null, $query=null) {
+    private function _request($path, $returnArrayKey=null, $query=null, $page=1) {
         $uri = $this->_client->getUri();
 
         $uri->setPath( $path );
 
-        if( $query ) {
-            $uri->setQuery(array("query"=>$query));
-        }
+
+        $uri->setQuery(array("query"=>(string)$query, 'page'=>$page));
+
+        
 
         $this->_client->setUri($uri);
         $this->_client->setHeaders(array(
@@ -88,7 +90,8 @@ class SupportAPI extends Object {
             'File',
             $frontendOptions,
             $backendOptions);
-        $cacheKey = $this->cacheKey($path,$query);
+        $cacheKey = $this->cacheKey($path,$query, $page);
+
 
         if(!$result = $cache->load($cacheKey)) {
 
@@ -128,8 +131,8 @@ class SupportAPI extends Object {
         return $array;
     }
 
-    public function tickets($query=null) {
-        return $this->_request('/'.$this->config()->project.'/tickets', 'ticket', $query);
+    public function tickets($query=null, $page=1) {
+        return $this->_request('/'.$this->config()->project.'/tickets', 'ticket', $query, $page);
     }
 
     public function projects($query=null) {
