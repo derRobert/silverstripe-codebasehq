@@ -13,7 +13,8 @@ class ViewableTicket extends ViewableData {
         parent::__construct();
         foreach( $array as $k=>$v ) {
             if( !is_array($v) ) {
-                $this->$k=$v;
+                $prop = str_replace('-', '_', $k);
+                $this->$prop=$v;
             }
         }
         $this->TypeName = isset($array['type']['name'])?$array['type']['name']:false;
@@ -26,7 +27,7 @@ class ViewableTicket extends ViewableData {
         return implode("/", array(
             Config::inst()->get('SupportAPI', 'web_endpoint'),
             "tickets",
-            $this->{"ticket-id"}
+            $this->{"ticket_id"}
         ));
     }
 

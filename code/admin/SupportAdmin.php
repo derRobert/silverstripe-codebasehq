@@ -14,7 +14,6 @@ class SupportAdmin extends LeftAndMain {
     private static $url_segment = "support";
 
 
-
 //    private static $menu_icon = "dashboard/images/dashboard.png";
 //
 //
@@ -53,6 +52,7 @@ class SupportAdmin extends LeftAndMain {
             $this->page = (int)$page;
         }
         Requirements::css('codebasehq/css/SupportAdmin.css');
+        Requirements::javascript('codebasehq/javascript/codebasehq.js');
     }
 
     public function getEditForm($id = null, $fields = null) {
@@ -68,9 +68,9 @@ class SupportAdmin extends LeftAndMain {
 
         $fields->push( LiteralField::create('l_links', "
         <p>
-        <a class='action' href='". HTTP::setGetVar('query', '', $this->Link()) ."'>offene Tickets ({$project_info['open-tickets']})</a> |&nbsp;
-        <a class='action' href='". HTTP::setGetVar('query', 'status:closed', $this->Link()) ."'>geschlossene Tickets ({$project_info['closed-tickets']})</a> |&nbsp;
-        <a class='action' href='". HTTP::setGetVar('query', 'ALL', $this->Link()) ."'>alleTickets ({$project_info['total-tickets']})</a> 
+        <a class='action ticketlist' href='". HTTP::setGetVar('query', '', $this->Link()) ."'>offene Tickets ({$project_info['open-tickets']})</a> |&nbsp;
+        <a class='action ticketlist' href='". HTTP::setGetVar('query', 'status:closed', $this->Link()) ."'>geschlossene Tickets ({$project_info['closed-tickets']})</a> |&nbsp;
+        <a class='action ticketlist' href='". HTTP::setGetVar('query', 'ALL', $this->Link()) ."'>alleTickets ({$project_info['total-tickets']})</a> 
         </p>
         ") );
         if( $this->page > 1 ) {
@@ -96,18 +96,18 @@ class SupportAdmin extends LeftAndMain {
         $gridField = new GridField('Tickets',false, $List, $gridFieldConfig);
         $columns = $gridField->getConfig()->getComponentByType('GridFieldDataColumns');
         $columns->setDisplayFields(array(
-            'ticket-id' => 'ID',
+            'ticket_id' => 'ID',
             'summary' => 'Title',
-            'created-at' => 'erstellt am',
-            'updated-at' => 'update am',
+            'created_at' => 'erstellt am',
+            'updated_at' => 'update am',
             'PriorityName' => 'Prio',
             'TypeName' => 'Type',
             'StatusName' => 'Status',
             'assignee' => 'Zuständig',
-            'total-time-spent' => 'Zeit (h:m)',
+            'total_time_spent' => 'Zeit (h:m)',
         ));
         $columns->setFieldFormatting(array(
-            'total-time-spent' => function($value, &$item) {
+            'total_time_spent' => function($value, &$item) {
                 $hours = floor($value / 60);
                 $minutes = ($value % 60);
                 return sprintf('%02d:%02d', $hours, $minutes);
@@ -118,11 +118,11 @@ class SupportAdmin extends LeftAndMain {
             'summary' => function($value, &$item) {
                 return sprintf('<a href ="%s" target="codebasehq">%s</a>', $item->Link(), $item->summary);
             },
-            'created-at' => function($value, &$item) {
+            'created_at' => function($value, &$item) {
                 $date = new DateTime($value);
                 return $date->format('d.m.y H:i');
             },
-            'updated-at' => function($value, &$item) {
+            'updated_at' => function($value, &$item) {
                 $date = new DateTime($value);
                 return $date->format('d.m.y H:i');
             },
