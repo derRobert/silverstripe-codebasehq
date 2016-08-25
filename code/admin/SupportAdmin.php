@@ -7,7 +7,7 @@
  */
 class SupportAdmin extends LeftAndMain {
 
-    private static $menu_title = "Support";
+    private static $menu_title = "Support-Tickets";
 
 
 
